@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Latihan UAS Algoritma dan Pemrograman 2026</title>
+<style>
+:root{--bg:#f6f7f9;--surface:#fff;--text:#1b1f24;--muted:#5b6470;--border:#d9dde3;--accent:#2563eb;--ok:#15803d;--bad:#b91c1c;--code:#0f172a;--codetext:#e2e8f0}
+@media (prefers-color-scheme: dark){:root{--bg:#0f1115;--surface:#171a21;--text:#e6e8ec;--muted:#9aa3 af;--border:#2a2f3a;--accent:#60a5fa;--ok:#4ade80;--bad:#f87171;--code:#05070b;--codetext:#e2e8f0}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+header{padding:20px 16px 8px;max-width:1000px;margin:auto}
+h1{font-size:1.35rem;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.92rem}
+main{max-width:1000px;margin:auto;padding:12px 16px 40px}
+#status{font-size:.9rem;color:var(--muted);margin:8px 0}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+nav button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:.9rem;min-width:44px}
+nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+nav button.done{border-color:var(--ok)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
+.meta{font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--border);font-size:.78rem;margin-left:6px}
+h2{font-size:1.1rem;margin:4px 0 10px}
+.soal{white-space:pre-wrap;margin:0 0 12px}
+textarea{width:100%;min-height:260px;font-family:ui-monospace,Consolas,monospace;font-size:14px;background:var(--code);color:var(--codetext);border:1px solid var(--border);border-radius:8px;padding:12px;resize:vertical;tab-size:4}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.btn{border:none;border-radius:8px;padding:9px 14px;cursor:pointer;font-size:.92rem;background:var(--accent);color:#fff}
+.btn.alt{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#results{font-family:ui-monospace,Consolas,monospace;font-size:.85rem;white-space:pre-wrap;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;min-height:44px}
+.pass{color:var(--ok)} .fail{color:var(--bad)}
+.footer{margin-top:14px;font-size:.82rem;color:var(--muted)}
+.warn{font-size:.85rem;color:var(--muted);margin:8px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>Latihan UAS Algoritma dan Pemrograman 2026</h1>
+  <p>20 soal · 10 modul · Python · Isi bagian <code>LENGKAPI KODE DISINI</code> dan gunakan <code>return</code></p>
+</header>
+<main>
+  <div id="status">Memuat Python di browser...</div>
+  <nav id="nav"></nav>
+  <section class="card" id="card"></section>
+  <p class="warn">Test di sini hanya contoh (public test). Nilai UAS sebenarnya juga memakai hidden test. Latihan ini tidak menyimpan jawabanmu di server.</p>
+  <div class="footer">Mode latihan: silakan kerjakan sendiri. Kalau Python di browser gagal dimuat, salin kodemu ke IDE Python lokal untuk mengujinya.</div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.4/pyodide.js"></script>
+<script>
+const QUESTIONS = [
+{no:1,modul:"Introduction to Python",level:"Easy",
+ soal:"Lengkapi fungsi untuk menghitung luas persegi panjang.",
+ starter:"def hitung_luas(panjang, lebar):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["hitung_luas(3, 4)","12"],["hitung_luas(10, 2)","20"]]},
+{no:2,modul:"Introduction to Python",level:"Easy",
+ soal:"Konversi suhu dari Celsius ke Fahrenheit. Rumus: F = C × 9/5 + 32.",
+ starter:"def celsius_ke_fahrenheit(c):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["celsius_ke_fahrenheit(100)","212"],["celsius_ke_fahrenheit(0)","32"]]},
+{no:3,modul:"Conditional Statement",level:"Easy",
+ soal:"Kembalikan \"Positif\", \"Negatif\", atau \"Nol\" sesuai nilai n.",
+ starter:"def cek_bilangan(n):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["cek_bilangan(5)","'Positif'"],["cek_bilangan(-2)","'Negatif'"],["cek_bilangan(0)","'Nol'"]]},
+{no:4,modul:"Conditional Statement",level:"Easy",
+ soal:"Kembalikan nilai huruf: >=85 → \"A\", >=70 → \"B\", >=55 → \"C\", >=40 → \"D\", selain itu → \"E\".",
+ starter:"def nilai_huruf(nilai):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["nilai_huruf(90)","'A'"],["nilai_huruf(70)","'B'"],["nilai_huruf(54)","'D'"],["nilai_huruf(39)","'E'"]]},
+{no:5,modul:"Looping",level:"Easy",
+ soal:"Kembalikan jumlah bilangan dari 1 sampai n (inklusif).",
+ starter:"def jumlah_1_sampai_n(n):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["jumlah_1_sampai_n(10)","55"],["jumlah_1_sampai_n(1)","1"]]},
+{no:6,modul:"Looping",level:"Medium",
+ soal:"Kembalikan faktor prima terbesar dari n (n >= 2).\nContoh: faktor_prima_terbesar(13195) → 29",
+ starter:"def faktor_prima_terbesar(n):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["faktor_prima_terbesar(13195)","29"],["faktor_prima_terbesar(2)","2"]]},
+{no:7,modul:"Function",level:"Easy",
+ soal:"Kembalikan nilai faktorial dari n. Contoh: faktorial(5) → 120.",
+ starter:"def faktorial(n):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["faktorial(5)","120"],["faktorial(0)","1"]]},
+{no:8,modul:"Function",level:"Medium",
+ soal:"Kembalikan suku ke-n deret Fibonacci dengan fibonacci(0) = 0 dan fibonacci(1) = 1. Boleh rekursi atau iterasi, tetapi perhatikan efisiensinya untuk n yang besar.",
+ starter:"def fibonacci(n):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["fibonacci(10)","55"],["fibonacci(0)","0"]]},
+{no:9,modul:"String Manipulation",level:"Medium",
+ soal:"Balik urutan kata dalam kalimat. Setiap kata tetap utuh dan dipisahkan satu spasi.\nContoh: \"saya suka python\" → \"python suka saya\"",
+ starter:"def balik_urutan_kata(kalimat):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["balik_urutan_kata('saya suka python')","'python suka saya'"],["balik_urutan_kata('halo')","'halo'"]]},
+{no:10,modul:"String Manipulation",level:"Medium",
+ soal:"Kembalikan huruf yang paling sering muncul dalam teks. Abaikan kapital dan hanya hitung huruf (bukan angka atau tanda baca). Jika ada seri, kembalikan huruf yang paling awal dalam alfabet.\nContoh: \"Halo Dunia\" → \"a\"",
+ starter:"def huruf_terbanyak(teks):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["huruf_terbanyak('Halo Dunia')","'a'"],["huruf_terbanyak('Abba')","'a'"]]},
+{no:11,modul:"Data Type Collection",level:"Medium",
+ soal:"Kembalikan list berisi nilai unik dari daftar, sudah terurut menaik.\nContoh: [3, 1, 3, 2, 1] → [1, 2, 3]",
+ starter:"def unik_terurut(daftar):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["unik_terurut([3, 1, 3, 2, 1])","[1, 2, 3]"],["unik_terurut([])","[]"]]},
+{no:12,modul:"Data Type Collection",level:"Hard",
+ soal:"Cari dua elemen berbeda indeks dalam daftar yang jumlahnya sama dengan target. Kembalikan tuple (a, b) dengan a <= b. Jika tidak ada, kembalikan None.\nContoh: ([2, 7, 11, 15], 9) → (2, 7)",
+ starter:"def dua_angka_target(daftar, target):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["dua_angka_target([2, 7, 11, 15], 9)","(2, 7)"],["dua_angka_target([1, 2, 3], 10)","None"]]},
+{no:13,modul:"Files",level:"Medium",
+ soal:"Kembalikan rata-rata semua bilangan di file, dibulatkan 2 angka di belakang koma. Setiap baris berisi satu bilangan bulat. (Contoh test memakai file data.txt yang sudah disiapkan.)",
+ starter:"def rata_rata_file(nama_file):\n    # LENGKAPI KODE DISINI\n",
+ setup:"open('data.txt','w').write('10\\n20\\n25\\n')",
+ tests:[["rata_rata_file('data.txt')","18.33"]]},
+{no:14,modul:"Files",level:"Medium",
+ soal:"Kembalikan jumlah baris yang mengandung kata kata (tidak case-sensitive). (Contoh test memakai file data.txt yang sudah disiapkan.)",
+ starter:"def hitung_baris_berisi(nama_file, kata):\n    # LENGKAPI KODE DISINI\n",
+ setup:"open('data.txt','w').write('Saya suka python\\nHalo\\nPython itu asik\\n')",
+ tests:[["hitung_baris_berisi('data.txt','python')","2"],["hitung_baris_berisi('data.txt','xyz')","0"]]},
+{no:15,modul:"Regular Expression",level:"Medium",
+ soal:"Kembalikan True jika teks adalah alamat email yang valid, dan False jika tidak. Boleh memakai import re.\nContoh: \"qlos@unhas.ac.id\" → True",
+ starter:"import re\n\ndef valid_email(teks):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["valid_email('qlos@unhas.ac.id')","True"],["valid_email('qlos.unhas.ac.id')","False"]]},
+{no:16,modul:"Regular Expression",level:"Hard",
+ soal:"Ekstrak semua tanggal berformat DD/MM/YYYY dari teks. DD harus 01–31, MM harus 01–12, dan YYYY tepat empat digit. Kembalikan list string sesuai urutan kemunculannya.\nContoh: \"Rapat 05/11/2026 dan 31/13/2026\" → [\"05/11/2026\"]",
+ starter:"import re\n\ndef ekstrak_tanggal(teks):\n    # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["ekstrak_tanggal('Rapat 05/11/2026 dan 31/13/2026')","['05/11/2026']"],["ekstrak_tanggal('Mulai 01/01/2026')","['01/01/2026']"]]},
+{no:17,modul:"OOP 1",level:"Easy",
+ soal:"Lengkapi class Mahasiswa. Method info() mengembalikan string dengan format \"Nama: <nama>, NIM: <nim>\".",
+ starter:"class Mahasiswa:\n    def __init__(self, nama, nim):\n        # LENGKAPI KODE DISINI\n\n    def info(self):\n        # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["Mahasiswa('Qlos','H071251039').info()","'Nama: Qlos, NIM: H071251039'"]]},
+{no:18,modul:"OOP 1",level:"Medium",
+ soal:"Lengkapi class Rekening. Method tarik(jumlah) mengurangi saldo dan mengembalikan saldo terbaru. Jika saldo tidak cukup, kembalikan string \"Saldo tidak cukup\" dan saldo tidak berubah.",
+ starter:"class Rekening:\n    def __init__(self, saldo):\n        # LENGKAPI KODE DISINI\n\n    def tarik(self, jumlah):\n        # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["Rekening(100).tarik(30)","70"],["Rekening(100).tarik(150)","'Saldo tidak cukup'"]]},
+{no:19,modul:"OOP 2",level:"Medium",
+ soal:"Class Persegi mewarisi class Bangun. Lengkapi method luas() di Persegi agar mengembalikan sisi * sisi. Di Bangun, luas() cukup mengembalikan 0.",
+ starter:"class Bangun:\n    def luas(self):\n        return 0\n\nclass Persegi(Bangun):\n    def __init__(self, sisi):\n        # LENGKAPI KODE DISINI\n\n    def luas(self):\n        # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["Persegi(4).luas()","16"],["Bangun().luas()","0"]]},
+{no:20,modul:"OOP 2",level:"Medium",
+ soal:"Lengkapi class Keranjang yang menyimpan item dalam dictionary {nama_item: harga}.\n- tambah(item, harga) menambah item.\n- hapus(item) menghapus item jika ada.\n- total() mengembalikan jumlah seluruh harga.",
+ starter:"class Keranjang:\n    def __init__(self):\n        # LENGKAPI KODE DISINI\n\n    def tambah(self, item, harga):\n        # LENGKAPI KODE DISINI\n\n    def hapus(self, item):\n        # LENGKAPI KODE DISINI\n\n    def total(self):\n        # LENGKAPI KODE DISINI\n",
+ setup:"", tests:[["(lambda k:(k.tambah('pensil',2000),k.tambah('buku',5000),k.hapus('pensil'),k.total())[-1])(Keranjang())","5000"],["(lambda k:(k.hapus('x'),k.total())[-1])(Keranjang())","0"]]}
+];
+
+const state = {};            // no -> code
+const done = {};             // no -> true if all tests passed
+let pyodide = null;
+let current = 1;
+
+const nav = document.getElementById("nav");
+const card = document.getElementById("card");
+const statusEl = document.getElementById("status");
+
+QUESTIONS.forEach(q => {
+  state[q.no] = q.starter;
+  const b = document.createElement("button");
+  b.textContent = q.no;
+  b.onclick = () => show(q.no);
+  b.id = "nb" + q.no;
+  nav.appendChild(b);
+});
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function show(no){
+  current = no;
+  const q = QUESTIONS.find(x => x.no === no);
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.id === "nb"+no));
+  card.innerHTML = `
+    <div class="meta">Soal ${q.no} · Modul ${q.modul}<span class="badge">${q.level}</span></div>
+    <h2>Soal ${q.no}</h2>
+    <p class="soal">${esc(q.soal)}</p>
+    <textarea id="code" spellcheck="false">${esc(state[no])}</textarea>
+    <div class="row">
+      <button class="btn" id="runBtn" ${pyodide?"":"disabled"}>Jalankan Test</button>
+      <button class="btn alt" id="resetBtn">Reset Kode</button>
+      ${no>1?'<button class="btn alt" id="prevBtn">← Sebelumnya</button>':''}
+      ${no<20?'<button class="btn alt" id="nextBtn">Berikutnya →</button>':''}
+    </div>
+    <div id="results">Hasil test akan muncul di sini.</div>`;
+  const ta = document.getElementById("code");
+  ta.addEventListener("input", () => state[no] = ta.value);
+  ta.addEventListener("keydown", e => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const s = ta.selectionStart;
+      ta.value = ta.value.slice(0,s) + "    " + ta.value.slice(ta.selectionEnd);
+      ta.selectionStart = ta.selectionEnd = s + 4;
+      state[no] = ta.value;
+    }
+  });
+  document.getElementById("runBtn").onclick = () => runTests(q);
+  document.getElementById("resetBtn").onclick = () => { state[no] = q.starter; show(no); };
+  if (document.getElementById("prevBtn")) document.getElementById("prevBtn").onclick = () => show(no-1);
+  if (document.getElementById("nextBtn")) document.getElementById("nextBtn").onclick = () => show(no+1);
+}
+
+async function runTests(q){
+  const out = document.getElementById("results");
+  out.innerHTML = "";
+  const lines = [];
+  const ns = pyodide.toPy({});
+  try {
+    if (q.setup) pyodide.runPython(q.setup, {globals: ns});
+    pyodide.runPython(state[q.no], {globals: ns});
+  } catch (err) {
+    out.innerHTML = `<span class="fail">Error saat membaca kode:\n${esc(String(err).split("\n").slice(-3).join("\n"))}</span>`;
+    return;
+  }
+  let passed = 0;
+  for (const [expr, expected] of q.tests) {
+    try {
+      const ok = pyodide.runPython(`(${expr}) == (${expected})`, {globals: ns});
+      if (ok) { passed++; lines.push(`<span class="pass">✔ ${esc(expr)}</span>`); }
+      else { lines.push(`<span class="fail">✘ ${esc(expr)}  (harapan: ${esc(expected)})</span>`); }
+    } catch (err) {
+      lines.push(`<span class="fail">✘ ${esc(expr)}  → error: ${esc(String(err).split("\n").pop())}</span>`);
+    }
+  }
+  done[q.no] = passed === q.tests.length;
+  document.getElementById("nb"+q.no).classList.toggle("done", done[q.no]);
+  lines.push(`\n${passed}/${q.tests.length} public test lulus`);
+  out.innerHTML = lines.join("\n");
+}
+
+(async function init(){
+  try {
+    pyodide = await loadPyodide({indexURL: "https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.4/"});
+    statusEl.textContent = "Python siap. Pilih soal dan mulai mengerjakan.";
+    const rb = document.getElementById("runBtn");
+    if (rb) rb.disabled = false;
+  } catch (e) {
+    statusEl.innerHTML = "Python di browser gagal dimuat. Kamu tetap bisa mengerjakan soal, lalu uji kodemu di IDE Python lokal.";
+  }
+  show(1);
+})();
+</script>
+</body>
+</html>
