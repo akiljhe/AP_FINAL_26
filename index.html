@@ -47,7 +47,7 @@ textarea{width:100%;min-height:260px;font-family:ui-monospace,Consolas,monospace
   <div class="footer">Mode latihan: silakan kerjakan sendiri. Kalau Python di browser gagal dimuat, salin kodemu ke IDE Python lokal untuk mengujinya.</div>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.4/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
 <script>
 const QUESTIONS = [
 {no:1,modul:"Introduction to Python",level:"Easy",
@@ -217,7 +217,7 @@ async function runTests(q){
 
 (async function init(){
   try {
-    pyodide = await loadPyodide({indexURL: "https://cdnjs.cloudflare.com/ajax/libs/pyodide/0.26.4/"});
+    pyodide = await loadPyodide({indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"});
     statusEl.textContent = "Python siap. Pilih soal dan mulai mengerjakan.";
     const rb = document.getElementById("runBtn");
     if (rb) rb.disabled = false;
